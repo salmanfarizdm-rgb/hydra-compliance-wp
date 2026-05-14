@@ -1,0 +1,27 @@
+# ── WordPress core (already committed in initial snapshot) ──────────────────
+# wp-config.php is tracked but contains local DB credentials.
+# When deploying to production, create wp-config.php from wp-config-sample.php.
+
+# ── Vendor plugins (reinstall with bin/install-plugins.sh) ──────────────────
+wp-content/plugins/kadence-blocks/
+wp-content/plugins/seo-by-rank-math/
+wp-content/plugins/w3-total-cache/
+wp-content/plugins/wpforms-lite/
+
+# ── Generated / runtime ──────────────────────────────────────────────────────
+wp-content/cache/
+wp-content/advanced-cache.php
+wp-content/w3tc-config/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/backups/
+
+# ── Media uploads (manage separately or via CDN) ─────────────────────────────
+wp-content/uploads/
+
+# ── OS / editor noise ────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
