@@ -12,6 +12,16 @@
  * Or use the individual /tmp/hydra-svc-*.php builder scripts.
  */
 
+add_action( 'wp_enqueue_scripts', function () {
+    wp_enqueue_script(
+        'hydra-frontend',
+        plugins_url( 'hydra-frontend.js', __FILE__ ),
+        [],
+        '1.1',
+        true
+    );
+} );
+
 if ( ! function_exists( 'hydra_build_service_page' ) ) :
 
 function hydra_build_service_page( array $cfg ): string {
