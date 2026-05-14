@@ -93,6 +93,8 @@ $table_prefix = 'wp_';
  */
 if ( ! defined( 'WP_DEBUG' ) ) {
 	define( 'WP_DEBUG', false );
+	define( 'WP_DEBUG_DISPLAY', false );
+	@ini_set( 'display_errors', 0 );
 }
 
 define( 'WP_ENVIRONMENT_TYPE', 'local' );
