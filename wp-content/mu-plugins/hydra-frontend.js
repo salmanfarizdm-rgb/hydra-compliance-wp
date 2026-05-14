@@ -43,6 +43,34 @@
     });
   });
 
+  /* ── Mobile nav toggle ── */
+  var toggle = document.querySelector(
+    '.kadence-mobile-nav-toggle, button.menu-toggle, .mobile-trigger'
+  );
+  var navWrap = document.querySelector(
+    '.kadence-mobile-nav-wrap, .mobile-navigation-wrap'
+  );
+  if (toggle && navWrap) {
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.addEventListener('click', function () {
+      var open = navWrap.classList.toggle('is-active');
+      toggle.setAttribute('aria-expanded', String(open));
+      document.body.classList.toggle('nav-open', open);
+    });
+    // Close when clicking outside
+    document.addEventListener('click', function (e) {
+      if (
+        navWrap.classList.contains('is-active') &&
+        !navWrap.contains(e.target) &&
+        !toggle.contains(e.target)
+      ) {
+        navWrap.classList.remove('is-active');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('nav-open');
+      }
+    });
+  }
+
   /* ── Sticky header scroll shadow ── */
   var header = document.getElementById('masthead') || document.querySelector('.site-header');
   if (header) {

@@ -1,0 +1,649 @@
+/* ==========================================================================
+   HYDRA Quality & Compliance — Responsive Stylesheet
+   Breakpoints:
+     xl   : 1200px+
+     lg   : 992px – 1199px
+     md   : 768px – 991px
+     sm   : 480px – 767px
+     xs   : < 480px
+     fold : < 360px
+   ========================================================================== */
+
+/* ── Global reset helpers ─────────────────────────────────────────────────── */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+body {
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+img,
+video,
+iframe,
+embed,
+object {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Content container — max-width + centred ─────────────────────────────── */
+.hydra-hero          .wp-block-group__inner-container,
+.hydra-stats-bar     .wp-block-group__inner-container,
+.hydra-services-grid-section .wp-block-group__inner-container,
+.hydra-industries-section    .wp-block-group__inner-container,
+.hydra-faq-section   .wp-block-group__inner-container,
+.hydra-cta-banner    .wp-block-group__inner-container,
+.hydra-footer        .wp-block-group__inner-container,
+.site-header .header-inner-wrap,
+.site-header .kadence-header-inner-wrap {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+/* ── Section horizontal padding — desktop base ───────────────────────────── */
+.hydra-hero,
+.hydra-stats-bar,
+.hydra-services-grid-section,
+.hydra-industries-section,
+.hydra-faq-section,
+.hydra-cta-banner,
+.hydra-footer {
+  padding-left: 5% !important;
+  padding-right: 5% !important;
+}
+
+/* ==========================================================================
+   LAPTOP  992px – 1199px
+   ========================================================================== */
+@media (max-width: 1199px) {
+
+  /* Services: still 3 cols but tighter */
+  .hydra-services-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  /* Industries: 4 cols */
+  .hydra-industries {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+
+  /* Stats numbers slightly smaller */
+  .hydra-stats-bar h3 {
+    font-size: 26px !important;
+  }
+
+  /* Hero heading */
+  .hydra-hero h1,
+  .hydra-hero .wp-block-heading {
+    font-size: clamp(28px, 4.5vw, 50px) !important;
+  }
+
+  /* Section padding */
+  .hydra-hero,
+  .hydra-stats-bar,
+  .hydra-services-grid-section,
+  .hydra-industries-section,
+  .hydra-faq-section,
+  .hydra-cta-banner,
+  .hydra-footer {
+    padding-left: 4% !important;
+    padding-right: 4% !important;
+  }
+}
+
+/* ==========================================================================
+   TABLET LANDSCAPE  768px – 991px
+   ========================================================================== */
+@media (max-width: 991px) {
+
+  /* ── Header ── */
+  .header-navigation.header-navigation-main,
+  .header-button-wrap {
+    display: none !important;
+  }
+  .kadence-mobile-nav-toggle,
+  button.menu-toggle,
+  .mobile-trigger {
+    display: flex !important;
+  }
+
+  /* ── Hero ── */
+  .hydra-hero {
+    padding-top: 72px !important;
+    padding-bottom: 64px !important;
+  }
+  .hydra-hero h1,
+  .hydra-hero .wp-block-heading {
+    font-size: clamp(26px, 4vw, 42px) !important;
+  }
+  .hydra-hero p { font-size: 16px !important; }
+
+  /* ── Stats: 2×2 grid ── */
+  .hydra-stats-bar .wp-block-columns {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0 !important;
+    flex-wrap: unset !important;
+  }
+  .hydra-stats-bar .wp-block-column {
+    border-right: 1px solid #EDF1F3 !important;
+    border-bottom: 1px solid #EDF1F3 !important;
+    min-width: unset !important;
+  }
+  .hydra-stats-bar .wp-block-column:nth-child(2n) {
+    border-right: none !important;
+  }
+  .hydra-stats-bar .wp-block-column:nth-last-child(-n+2) {
+    border-bottom: none !important;
+  }
+
+  /* ── Services: 2 cols ── */
+  .hydra-services-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  /* ── Industries: 3 cols ── */
+  .hydra-industries {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  .hydra-industry {
+    white-space: normal !important;
+    border-radius: 10px !important;
+    text-align: center;
+  }
+
+  /* ── FAQ ── */
+  .hydra-faq-section .wp-block-details summary,
+  .hydra-faq-section details summary {
+    font-size: 14px !important;
+    padding: 16px 48px 16px 18px !important;
+  }
+
+  /* ── CTA ── */
+  .hydra-cta-banner {
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+  }
+  .hydra-cta-banner h2 {
+    font-size: clamp(24px, 4vw, 36px) !important;
+  }
+
+  /* ── Footer: 2 cols ── */
+  .hydra-footer .wp-block-columns {
+    flex-wrap: wrap !important;
+    gap: 32px !important;
+  }
+  .hydra-footer .wp-block-column {
+    flex-basis: calc(50% - 16px) !important;
+    min-width: calc(50% - 16px) !important;
+  }
+
+  /* ── Section padding ── */
+  .hydra-hero,
+  .hydra-stats-bar,
+  .hydra-services-grid-section,
+  .hydra-industries-section,
+  .hydra-faq-section,
+  .hydra-cta-banner,
+  .hydra-footer {
+    padding-left: 4% !important;
+    padding-right: 4% !important;
+  }
+}
+
+/* ==========================================================================
+   TABLET PORTRAIT / LARGE PHONE  480px – 767px
+   ========================================================================== */
+@media (max-width: 767px) {
+
+  /* ── Header ── */
+  #masthead .header-inner-wrap,
+  .site-header .kadence-header-inner-wrap {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .custom-logo { height: 30px !important; }
+  .site-title  { font-size: 16px !important; }
+
+  /* ── Hero ── */
+  .hydra-hero {
+    padding-top: 56px !important;
+    padding-bottom: 48px !important;
+  }
+  .hydra-hero h1,
+  .hydra-hero .wp-block-heading {
+    font-size: clamp(24px, 6vw, 36px) !important;
+    max-width: 100% !important;
+  }
+  .hydra-hero p {
+    font-size: 15px !important;
+    max-width: 100% !important;
+  }
+
+  /* Badges wrap to 2 rows */
+  .hydra-badges {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+    margin-top: 24px !important;
+  }
+  .hydra-badge {
+    justify-content: center;
+    text-align: center;
+    font-size: 11px !important;
+    padding: 8px 10px !important;
+  }
+
+  /* ── Stats: keep 2×2 ── */
+  .hydra-stats-bar {
+    padding-top: 32px !important;
+    padding-bottom: 32px !important;
+  }
+  .hydra-stats-bar h3 { font-size: 24px !important; }
+
+  /* ── Services: 1 col ── */
+  .hydra-services-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .hydra-card { padding: 22px 20px !important; }
+  .hydra-services-grid-section {
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+  }
+
+  /* ── Industries: 2 cols ── */
+  .hydra-industries {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .hydra-industries-section {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+  }
+
+  /* ── FAQ ── */
+  .hydra-faq-section {
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
+  }
+  .hydra-faq-section h2 {
+    font-size: clamp(22px, 5vw, 30px) !important;
+    margin-bottom: 32px !important;
+  }
+
+  /* ── CTA ── */
+  .hydra-cta-banner {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+  }
+  .hydra-cta-banner h2 {
+    font-size: clamp(22px, 5vw, 32px) !important;
+  }
+  .hydra-cta-banner p { font-size: 14px !important; }
+  .hydra-cta-banner .wp-block-buttons {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  .hydra-cta-banner .wp-block-button { width: 100%; max-width: 320px; }
+  .hydra-cta-banner .wp-block-button__link {
+    width: 100% !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  /* ── Footer ── */
+  .hydra-footer .wp-block-columns {
+    flex-direction: column !important;
+    gap: 28px !important;
+  }
+  .hydra-footer .wp-block-column {
+    flex-basis: 100% !important;
+    min-width: 100% !important;
+    text-align: center !important;
+  }
+  .hydra-footer ul { text-align: center; }
+  .hydra-footer-bottom,
+  .hydra-footer .wp-block-separator ~ p,
+  .hydra-footer hr ~ p {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 6px !important;
+  }
+
+  /* ── Section padding ── */
+  .hydra-hero,
+  .hydra-stats-bar,
+  .hydra-services-grid-section,
+  .hydra-industries-section,
+  .hydra-faq-section,
+  .hydra-cta-banner,
+  .hydra-footer {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
+
+/* ==========================================================================
+   MOBILE  under 480px
+   ========================================================================== */
+@media (max-width: 479px) {
+
+  /* ── Header ── */
+  .custom-logo { height: 28px !important; }
+  .site-title  { font-size: 15px !important; }
+
+  /* ── Hero ── */
+  .hydra-hero {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+  .hydra-hero h1,
+  .hydra-hero .wp-block-heading {
+    font-size: clamp(22px, 7vw, 30px) !important;
+  }
+
+  /* Buttons stack on mobile */
+  .hydra-hero .wp-block-buttons {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+  .hydra-hero .wp-block-button { width: 100%; }
+  .hydra-hero .wp-block-button__link {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  /* ── Stats: single column ── */
+  .hydra-stats-bar .wp-block-columns {
+    grid-template-columns: 1fr !important;
+  }
+  .hydra-stats-bar .wp-block-column {
+    border-right: none !important;
+    border-bottom: 1px solid #EDF1F3 !important;
+    padding: 16px 8px !important;
+  }
+  .hydra-stats-bar .wp-block-column:last-child {
+    border-bottom: none !important;
+  }
+  .hydra-stats-bar h3 { font-size: 22px !important; }
+
+  /* ── Services ── */
+  .hydra-card h3 { font-size: 15px !important; }
+
+  /* ── Industries: still 2 cols on small phones ── */
+  .hydra-industries {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px !important;
+  }
+  .hydra-industry {
+    font-size: 12px !important;
+    padding: 8px 12px !important;
+  }
+
+  /* ── FAQ ── */
+  .hydra-faq-section .wp-block-details summary,
+  .hydra-faq-section details summary {
+    font-size: 14px !important;
+    padding: 14px 44px 14px 16px !important;
+  }
+  .hydra-faq-section .wp-block-details > *:not(summary),
+  .hydra-faq-section details > *:not(summary) {
+    font-size: 13px !important;
+    padding: 0 16px 14px !important;
+  }
+
+  /* ── CTA ── */
+  .hydra-cta-banner {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+  .hydra-cta-banner h2 { font-size: 22px !important; }
+
+  /* ── Footer ── */
+  .hydra-footer {
+    padding-top: 40px !important;
+    padding-bottom: 24px !important;
+  }
+}
+
+/* ==========================================================================
+   FOLD PHONE  under 360px
+   ========================================================================== */
+@media (max-width: 359px) {
+
+  /* ── Header ── */
+  .custom-logo { height: 24px !important; }
+  .site-title  { font-size: 13px !important; }
+
+  /* ── Hero ── */
+  .hydra-hero {
+    padding-top: 32px !important;
+    padding-bottom: 32px !important;
+  }
+  .hydra-hero h1,
+  .hydra-hero .wp-block-heading {
+    font-size: 22px !important;
+    letter-spacing: -0.3px;
+  }
+  .hydra-hero p { font-size: 14px !important; }
+  .hydra-pill   { font-size: 10px !important; padding: 4px 10px 4px 8px !important; }
+
+  /* ── Badges: single column ── */
+  .hydra-badges {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Stats ── */
+  .hydra-stats-bar h3 { font-size: 20px !important; }
+  .hydra-stats-bar p  { font-size: 10px !important; }
+
+  /* ── Services ── */
+  .hydra-card { padding: 18px 16px !important; }
+  .hydra-card h3  { font-size: 14px !important; }
+  .hydra-card p   { font-size: 12px !important; }
+
+  /* ── Industries: single column on fold ── */
+  .hydra-industries {
+    grid-template-columns: 1fr !important;
+  }
+  .hydra-industry { font-size: 12px !important; }
+
+  /* ── FAQ ── */
+  .hydra-faq-section .wp-block-details summary,
+  .hydra-faq-section details summary {
+    font-size: 13px !important;
+  }
+
+  /* ── CTA ── */
+  .hydra-cta-banner h2 { font-size: 20px !important; }
+  .hydra-cta-banner p  { font-size: 13px !important; }
+
+  /* ── Footer ── */
+  .hydra-footer h3 { font-size: 11px !important; }
+  .hydra-footer p,
+  .hydra-footer li { font-size: 12px !important; }
+
+  /* ── Section padding: tightest ── */
+  .hydra-hero,
+  .hydra-stats-bar,
+  .hydra-services-grid-section,
+  .hydra-industries-section,
+  .hydra-faq-section,
+  .hydra-cta-banner,
+  .hydra-footer {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+}
+
+/* ==========================================================================
+   LARGE DESKTOP  1200px+
+   ========================================================================== */
+@media (min-width: 1200px) {
+
+  .hydra-services-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+
+  .hydra-industries {
+    grid-template-columns: repeat(6, 1fr) !important;
+  }
+
+  /* Footer back to 3 columns */
+  .hydra-footer .wp-block-column {
+    flex-basis: auto !important;
+    min-width: auto !important;
+    text-align: left !important;
+  }
+
+  /* Generous section padding */
+  .hydra-hero,
+  .hydra-stats-bar,
+  .hydra-services-grid-section,
+  .hydra-industries-section,
+  .hydra-faq-section,
+  .hydra-cta-banner,
+  .hydra-footer {
+    padding-left: 5% !important;
+    padding-right: 5% !important;
+  }
+}
+
+/* ==========================================================================
+   MOBILE NAV DRAWER  (all widths, triggered at < 991px)
+   ========================================================================== */
+@media (max-width: 991px) {
+
+  .kadence-mobile-nav-wrap,
+  .mobile-navigation-wrap {
+    display: none;
+    width: 100%;
+    background: #ffffff;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    padding: 8px 0 20px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 9998;
+  }
+
+  /* JS adds .nav-open to body to reveal drawer */
+  body.nav-open .kadence-mobile-nav-wrap,
+  body.nav-open .mobile-navigation-wrap,
+  #masthead .kadence-mobile-nav-wrap.is-active,
+  #masthead .mobile-navigation-wrap.is-active {
+    display: block !important;
+  }
+
+  .kadence-mobile-nav-wrap .nav-menu,
+  .mobile-navigation-wrap .nav-menu {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+    padding: 0 20px !important;
+    margin: 0 !important;
+    list-style: none !important;
+  }
+
+  .kadence-mobile-nav-wrap .nav-menu li,
+  .mobile-navigation-wrap .nav-menu li {
+    width: 100%;
+    border-bottom: 1px solid #F0F5F7;
+  }
+  .kadence-mobile-nav-wrap .nav-menu li:last-child,
+  .mobile-navigation-wrap .nav-menu li:last-child {
+    border-bottom: none;
+  }
+
+  .kadence-mobile-nav-wrap .nav-menu li a,
+  .mobile-navigation-wrap .nav-menu li a {
+    font-family: 'DM Sans', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    color: #0C1E28 !important;
+    padding: 13px 4px !important;
+    display: block;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .kadence-mobile-nav-wrap .nav-menu li a:hover,
+  .mobile-navigation-wrap .nav-menu li a:hover {
+    color: #016B7A !important;
+  }
+
+  /* Sub-menu in drawer */
+  .kadence-mobile-nav-wrap .sub-menu,
+  .mobile-navigation-wrap .sub-menu {
+    position: static !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #F5F8F9;
+    border-radius: 8px !important;
+    padding: 4px 12px !important;
+    margin: 0 0 8px !important;
+    min-width: auto !important;
+  }
+  .kadence-mobile-nav-wrap .sub-menu li a,
+  .mobile-navigation-wrap .sub-menu li a {
+    font-size: 14px !important;
+    padding: 10px 4px !important;
+    color: #3D5460 !important;
+  }
+
+  /* CTA button in drawer */
+  .kadence-mobile-nav-wrap .nav-menu-cta,
+  .mobile-navigation-wrap .nav-menu-cta {
+    padding: 16px 20px 0;
+  }
+  .kadence-mobile-nav-wrap .nav-menu-cta a,
+  .mobile-navigation-wrap .nav-menu-cta a {
+    display: inline-flex !important;
+    background: #016B7A !important;
+    color: #ffffff !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    text-align: center;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+/* ── Admin-bar offset adjustments at breakpoints ────────────────────────── */
+@media (max-width: 782px) {
+  .admin-bar #masthead,
+  .admin-bar .site-header {
+    top: 46px !important;
+  }
+}
+@media (max-width: 600px) {
+  .admin-bar #masthead,
+  .admin-bar .site-header {
+    top: 0 !important;   /* WP hides the admin bar at this width */
+  }
+}
+
+/* ── Utility: prevent content overflow globally ─────────────────────────── */
+.wp-block-group,
+.wp-block-columns,
+.wp-block-column,
+.entry-content {
+  min-width: 0;
+}
