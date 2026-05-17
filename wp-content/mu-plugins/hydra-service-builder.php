@@ -22,6 +22,246 @@ add_action( 'wp_enqueue_scripts', function () {
     );
 } );
 
+// ── Page Toggle Bar + SEO Keywords Bar ────────────────────────────────────────
+
+add_action( 'kadence_after_header', 'hydra_render_page_bars' );
+
+function hydra_render_page_bars(): void {
+
+    // Page definitions: slug => [ label, url, h1_chips[], h2_chips[] ]
+    $pages = [
+        'temperature-mapping-saudi-arabia' => [
+            'label' => '1·Temp Mapping',
+            'url'   => '/services/temperature-mapping-saudi-arabia/',
+            'h1'    => [ 'temperature mapping services Saudi Arabia' ],
+            'h2'    => [ 'warehouse temperature mapping' ],
+        ],
+        'validation-qualification-services' => [
+            'label' => '2·Validation',
+            'url'   => '/services/validation-qualification-services/',
+            'h1'    => [ 'validation and qualification services Saudi Arabia' ],
+            'h2'    => [ 'cold chain validation services' ],
+        ],
+        'gdp-compliance-saudi-arabia' => [
+            'label' => '3·GDP Compliance',
+            'url'   => '/services/gdp-compliance-saudi-arabia/',
+            'h1'    => [ 'GDP compliance Saudi Arabia' ],
+            'h2'    => [ 'SFDA GDP compliance' ],
+        ],
+        'monitoring-data-loggers' => [
+            'label' => '4·Monitoring',
+            'url'   => '/services/monitoring-data-loggers/',
+            'h1'    => [ 'real time temperature monitoring system' ],
+            'h2'    => [ 'cold chain monitoring system', 'temperature data logger' ],
+        ],
+        'calibration-services' => [
+            'label' => '5·Calibration',
+            'url'   => '/services/calibration-services/',
+            'h1'    => [ 'calibration services Saudi Arabia' ],
+            'h2'    => [],
+        ],
+        'pharmaceutical-quality-management-system' => [
+            'label' => '6·QMS',
+            'url'   => '/services/pharmaceutical-quality-management-system/',
+            'h1'    => [ 'pharma QMS Saudi Arabia' ],
+            'h2'    => [ 'QMS implementation' ],
+        ],
+        'thermal-packaging' => [
+            'label' => '7·Thermal Pack.',
+            'url'   => '/services/thermal-packaging/',
+            'h1'    => [ 'thermal packaging' ],
+            'h2'    => [ 'temperature controlled shipping' ],
+        ],
+        'computer-system-validation-saudi-arabia' => [
+            'label' => '8·CSV',
+            'url'   => '/services/computer-system-validation-saudi-arabia/',
+            'h1'    => [ 'computer system validation services' ],
+            'h2'    => [ 'GAMP 5 validation' ],
+        ],
+        'cold-chain-solutions-saudi-arabia' => [
+            'label' => '9·Cold Chain Sol.',
+            'url'   => '/services/cold-chain-solutions-saudi-arabia/',
+            'h1'    => [ 'cold chain solutions Saudi Arabia' ],
+            'h2'    => [ 'GDP transport solutions' ],
+        ],
+    ];
+
+    // Detect current page
+    $obj          = get_queried_object();
+    $current_slug = ( $obj instanceof WP_Post ) ? $obj->post_name : '';
+
+    // Only render on the 9 service/product pages
+    if ( ! array_key_exists( $current_slug, $pages ) ) {
+        return;
+    }
+
+    $current = $pages[ $current_slug ];
+
+    // Toggle buttons list (Home, 9 pages, About, Contact)
+    $toggle_buttons = array_merge(
+        [ [ 'label' => 'Home',    'url' => '/' ] ],
+        array_map( fn( $p ) => [ 'label' => $p['label'], 'url' => $p['url'] ], array_values( $pages ) ),
+        [
+            [ 'label' => 'About',   'url' => '/about/' ],
+            [ 'label' => 'Contact', 'url' => '/contact/' ],
+        ]
+    );
+
+    ?>
+    <style id="hydra-page-bars-css">
+    /* ── Page Toggle Bar ── */
+    .hydra-pg-bar {
+        background: #0C1E28;
+        padding: 9px 5%;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 50;
+    }
+    .hydra-pg-label {
+        font-size: 10px;
+        color: rgba(255,255,255,0.35);
+        letter-spacing: 0.8px;
+        margin-right: 4px;
+        white-space: nowrap;
+        font-family: 'DM Sans', sans-serif;
+    }
+    .hydra-pg-btn {
+        font-size: 11px;
+        padding: 4px 11px;
+        border-radius: 4px;
+        border: 1px solid rgba(255,255,255,0.15);
+        background: transparent;
+        color: rgba(255,255,255,0.52);
+        cursor: pointer;
+        font-family: 'DM Sans', sans-serif;
+        text-decoration: none;
+        display: inline-block;
+        white-space: nowrap;
+        line-height: 1.4;
+    }
+    .hydra-pg-btn:hover {
+        color: rgba(255,255,255,0.85);
+        border-color: rgba(255,255,255,0.35);
+    }
+    .hydra-pg-btn.is-active {
+        background: #016B7A;
+        color: #ffffff;
+        border-color: #016B7A;
+    }
+    /* ── SEO Keywords Bar ── */
+    .hydra-kw-bar {
+        background: #132533;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        padding: 10px 5%;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .hydra-kw-label {
+        font-size: 10px;
+        color: rgba(255,255,255,0.35);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        white-space: nowrap;
+        font-family: 'DM Sans', sans-serif;
+    }
+    .hydra-kw-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+    }
+    .hydra-kw-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        border-radius: 4px;
+        font-size: 11px;
+        font-weight: 500;
+        padding: 3px 10px 3px 6px;
+        line-height: 1.4;
+        white-space: nowrap;
+        text-decoration: none;
+    }
+    .hydra-kw-chip .hydra-kw-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+        margin-right: 5px;
+    }
+    .hydra-kw-chip.h1 {
+        background: #E0F4F7;
+        color: #014F59;
+        border: 1px solid #b0dfe5;
+    }
+    .hydra-kw-chip.h1 .hydra-kw-dot { background: #016B7A; }
+    .hydra-kw-chip.h2 {
+        background: #F5F8F9;
+        color: #5E7580;
+        border: 1px solid #dde5e8;
+    }
+    .hydra-kw-chip.h2 .hydra-kw-dot { background: #aabdc4; }
+    /* ── Mobile: horizontal scroll ── */
+    @media (max-width: 767px) {
+        .hydra-pg-bar {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 9px 16px;
+        }
+        .hydra-pg-bar::-webkit-scrollbar { display: none; }
+        .hydra-kw-bar {
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 10px 16px;
+        }
+        .hydra-kw-bar::-webkit-scrollbar { display: none; }
+        .hydra-kw-chips { flex-wrap: nowrap; }
+    }
+    </style>
+
+    <div class="hydra-pg-bar" role="navigation" aria-label="Page navigation">
+        <span class="hydra-pg-label">Pages:</span>
+        <?php foreach ( $toggle_buttons as $btn ) :
+            $is_active = rtrim( $btn['url'], '/' ) === rtrim( $current['url'], '/' );
+        ?>
+        <a href="<?php echo esc_url( home_url( $btn['url'] ) ); ?>"
+           class="hydra-pg-btn<?php echo $is_active ? ' is-active' : ''; ?>"
+           <?php if ( $is_active ) echo 'aria-current="page"'; ?>>
+            <?php echo esc_html( $btn['label'] ); ?>
+        </a>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="hydra-kw-bar" aria-label="SEO target keywords">
+        <span class="hydra-kw-label">SEO Target Keywords</span>
+        <div class="hydra-kw-chips">
+            <?php foreach ( $current['h1'] as $kw ) : ?>
+            <span class="hydra-kw-chip h1">
+                <span class="hydra-kw-dot"></span>H1: <?php echo esc_html( $kw ); ?>
+            </span>
+            <?php endforeach; ?>
+            <?php foreach ( $current['h2'] as $kw ) : ?>
+            <span class="hydra-kw-chip h2">
+                <span class="hydra-kw-dot"></span>H2: <?php echo esc_html( $kw ); ?>
+            </span>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php
+}
+
 if ( ! function_exists( 'hydra_build_service_page' ) ) :
 
 function hydra_build_service_page( array $cfg ): string {
