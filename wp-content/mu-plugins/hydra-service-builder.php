@@ -50,7 +50,7 @@ function hydra_render_page_bars(): void {
         ],
         'monitoring-data-loggers' => [
             'label' => '4·Monitoring',
-            'url'   => '/services/monitoring-data-loggers/',
+            'url'   => '/products/monitoring-data-loggers/',
             'h1'    => [ 'real time temperature monitoring system' ],
             'h2'    => [ 'cold chain monitoring system', 'temperature data logger' ],
         ],
@@ -68,7 +68,7 @@ function hydra_render_page_bars(): void {
         ],
         'thermal-packaging' => [
             'label' => '7·Thermal Pack.',
-            'url'   => '/services/thermal-packaging/',
+            'url'   => '/products/thermal-packaging/',
             'h1'    => [ 'thermal packaging' ],
             'h2'    => [ 'temperature controlled shipping' ],
         ],
@@ -84,13 +84,19 @@ function hydra_render_page_bars(): void {
             'h1'    => [ 'cold chain solutions Saudi Arabia' ],
             'h2'    => [ 'GDP transport solutions' ],
         ],
+        'temperature-data-logger-saudi-arabia' => [
+            'label' => '10·Data Logger',
+            'url'   => '/products/temperature-data-logger-saudi-arabia/',
+            'h1'    => [ 'temperature data logger Saudi Arabia' ],
+            'h2'    => [ 'pharmaceutical data logger', 'ISO 17025 data logger calibration' ],
+        ],
     ];
 
     // Detect current page
     $obj          = get_queried_object();
     $current_slug = ( $obj instanceof WP_Post ) ? $obj->post_name : '';
 
-    // Only render on the 9 service/product pages
+    // Only render on the 10 service/product pages
     if ( ! array_key_exists( $current_slug, $pages ) ) {
         return;
     }
@@ -655,6 +661,49 @@ function hydra_get_service_svg( string $slug ): string {
   <text x="799" y="142" text-anchor="middle" font-size="9"  fill="rgba(255,255,255,0.5)" font-family="DM Sans,sans-serif">Inspection Ready</text>
   <!-- Bottom label -->
   <text x="450" y="208" text-anchor="middle" font-size="11" fill="rgba(255,255,255,0.3)" font-family="DM Sans,sans-serif" letter-spacing="2">Cold Chain Solutions Saudi Arabia</text>
+</svg>';
+
+        case 'temperature-data-logger-saudi-arabia': return '
+<svg width="100%" height="100%" viewBox="0 0 900 220" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="220" fill="#0C1E28"/>
+  <!-- Data logger device left -->
+  <rect x="80" y="60" width="60" height="100" rx="6" fill="none" stroke="#016B7A" stroke-width="1.5" opacity=".8"/>
+  <rect x="90" y="75" width="40" height="25" rx="3" fill="rgba(1,107,122,0.2)" stroke="#016B7A" stroke-width="1"/>
+  <text x="110" y="92" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.7)" font-family="DM Sans,sans-serif">-20°C</text>
+  <circle cx="110" cy="130" r="8" fill="none" stroke="#C8922A" stroke-width="1.5"/>
+  <text x="110" y="155" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.5)" font-family="DM Sans,sans-serif">USB</text>
+  <!-- Second logger -->
+  <rect x="180" y="60" width="60" height="100" rx="6" fill="none" stroke="#016B7A" stroke-width="1.5" opacity=".8"/>
+  <rect x="190" y="75" width="40" height="25" rx="3" fill="rgba(1,107,122,0.2)" stroke="#016B7A" stroke-width="1"/>
+  <text x="210" y="92" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.7)" font-family="DM Sans,sans-serif">+4°C</text>
+  <path d="M210 120 Q220 115 230 120 Q220 125 210 120" fill="none" stroke="#C8922A" stroke-width="1.5"/>
+  <text x="210" y="155" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.5)" font-family="DM Sans,sans-serif">Wireless</text>
+  <!-- Arrow to certificate -->
+  <line x1="260" y1="110" x2="320" y2="110" stroke="#016B7A" stroke-width="2" stroke-dasharray="5,3"/>
+  <polygon points="318,106 326,110 318,114" fill="#016B7A"/>
+  <!-- ISO Certificate card -->
+  <rect x="330" y="55" width="130" height="110" rx="8" fill="rgba(1,107,122,0.15)" stroke="#016B7A" stroke-width="1.5"/>
+  <text x="395" y="80" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.9)" font-family="DM Sans,sans-serif" font-weight="bold">ISO 17025</text>
+  <text x="395" y="96" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.5)" font-family="DM Sans,sans-serif">Calibration Certificate</text>
+  <line x1="350" y1="106" x2="440" y2="106" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+  <text x="395" y="122" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.5)" font-family="DM Sans,sans-serif">Traceable to Saudi</text>
+  <text x="395" y="134" text-anchor="middle" font-size="9" fill="rgba(255,255,255,.5)" font-family="DM Sans,sans-serif">national standards</text>
+  <text x="395" y="150" text-anchor="middle" font-size="10" fill="#C8922A" font-family="DM Sans,sans-serif">✓ SFDA accepted</text>
+  <!-- Specs panel right -->
+  <rect x="510" y="45" width="160" height="130" rx="8" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+  <text x="590" y="68" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.4)" font-family="DM Sans,sans-serif" letter-spacing="1">SPECIFICATIONS</text>
+  <text x="525" y="90" font-size="9" fill="rgba(255,255,255,.4)" font-family="DM Sans,sans-serif">Range</text>
+  <text x="655" y="90" text-anchor="end" font-size="9" fill="rgba(255,255,255,.75)" font-family="DM Sans,sans-serif">-40°C to +85°C</text>
+  <line x1="525" y1="97" x2="655" y2="97" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+  <text x="525" y="113" font-size="9" fill="rgba(255,255,255,.4)" font-family="DM Sans,sans-serif">Accuracy</text>
+  <text x="655" y="113" text-anchor="end" font-size="9" fill="rgba(255,255,255,.75)" font-family="DM Sans,sans-serif">±0.3°C / ±2% RH</text>
+  <line x1="525" y1="120" x2="655" y2="120" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+  <text x="525" y="136" font-size="9" fill="rgba(255,255,255,.4)" font-family="DM Sans,sans-serif">Compliance</text>
+  <text x="655" y="136" text-anchor="end" font-size="9" fill="rgba(255,255,255,.75)" font-family="DM Sans,sans-serif">21 CFR Part 11</text>
+  <line x1="525" y1="143" x2="655" y2="143" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+  <text x="525" y="159" font-size="9" fill="rgba(255,255,255,.4)" font-family="DM Sans,sans-serif">Models</text>
+  <text x="655" y="159" text-anchor="end" font-size="9" fill="rgba(255,255,255,.75)" font-family="DM Sans,sans-serif">USB · Wireless · PDF</text>
+  <text x="450" y="205" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.25)" font-family="DM Sans,sans-serif">Temperature Data Logger Saudi Arabia · ISO 17025 Calibrated</text>
 </svg>';
 
         default: return '';
