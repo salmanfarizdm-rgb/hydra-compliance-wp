@@ -849,3 +849,100 @@ object {
 @media (max-width: 480px) {
   .hydra-specs-table td:first-child { white-space: normal; }
 }
+
+/* ==========================================================================
+   SERVICE PAGE — layout helpers
+   ========================================================================== */
+
+/* Remove Kadence's top margin on service pages (gap fix) */
+.hydra-service-page .content-area         { margin-top: 0 !important; }
+.hydra-service-page .entry-content-wrap   { padding-top: 0 !important; }
+
+/* Hide entry-header (Kadence page title) on service pages */
+.hydra-service-page .entry-header         { display: none !important; }
+
+/* Hide breadcrumb bar inside page content on service pages
+   (breadcrumb is rendered by the block, not the theme hero) */
+.hydra-service-page .entry-hero { display: none !important; }
+
+/* Service page sidebar layout tweaks */
+.hydra-svc-sidebar .hydra-quote-card { position: sticky; top: 100px; }
+
+/* Service page body content classes */
+.egrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.ecard {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px solid #E0EAF0;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0C1E28;
+  box-shadow: 0 1px 4px rgba(12,30,40,0.06);
+}
+@media (max-width: 480px) { .egrid { grid-template-columns: 1fr; } }
+
+.cl {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+}
+.cl li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid #E8EFF3;
+  font-size: 14px;
+  color: #3D5460;
+  line-height: 1.5;
+}
+.cl li:last-child { border-bottom: none; }
+.chk {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  background: rgba(1,107,122,0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: #016B7A;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.sptable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 24px;
+}
+.sptable td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #E0EAF0;
+  color: #3D5460;
+  line-height: 1.5;
+}
+.sptable td:first-child {
+  font-weight: 600;
+  color: #0C1E28;
+  width: 42%;
+  white-space: nowrap;
+}
+.sptable tr:last-child td { border-bottom: none; }
+@media (max-width: 480px) { .sptable td:first-child { white-space: normal; } }
+
+/* ── Kadence credit / site-info global hide ── */
+.site-info, .kadence-credit,
+a[href*="kadencewp.com"], .footer-credit { display: none !important; }

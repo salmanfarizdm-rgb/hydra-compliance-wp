@@ -82,4 +82,58 @@
       }
     }, { passive: true });
   }
+
+  /* ── Sidebar form: fix all-selected bug + pre-select by page ── */
+  document.addEventListener('DOMContentLoaded', function () {
+    var forms = document.querySelectorAll('.wpforms-form');
+    forms.forEach(function (form) {
+      var selects = form.querySelectorAll('select');
+      selects.forEach(function (sel) {
+        // Detect service dropdown by option count (>= 5 options)
+        if (sel.options.length < 5) { return; }
+
+        // Fix: remove selected from all options first
+        Array.from(sel.options).forEach(function (opt) {
+          opt.selected = false;
+          opt.removeAttribute('selected');
+        });
+
+        // Determine which service matches the current page H1
+        var h1 = document.querySelector('h1.wp-block-heading');
+        var title = h1 ? h1.textContent.trim() : '';
+
+        var map = [
+          ['Temperature Mapping',          'Temperature Mapping'],
+          ['Validation',                   'Validation & Qualification'],
+          ['GDP Compliance',               'GDP Compliance'],
+          ['Calibration',                  'Calibration Services'],
+          ['Quality Management',           'Pharma QMS'],
+          ['Computer System Validation',   'Computer System Validation'],
+          ['Cold Chain',                   'Cold Chain Solutions'],
+          ['Monitoring',                   'Monitoring & Data Loggers'],
+          ['Temperature Data Logger',      'Temperature Data Logger'],
+          ['Thermal Packaging',            'Thermal Packaging'],
+        ];
+
+        var matched = false;
+        for (var i = 0; i < map.length; i++) {
+          if (title.indexOf(map[i][0]) !== -1) {
+            for (var j = 0; j < sel.options.length; j++) {
+              if (sel.options[j].value === map[i][1] ||
+                  sel.options[j].text  === map[i][1]) {
+                sel.selectedIndex = j;
+                matched = true;
+                break;
+              }
+            }
+            if (matched) { break; }
+          }
+        }
+        // Default to first option if nothing matched
+        if (!matched && sel.options.length > 0) {
+          sel.selectedIndex = 0;
+        }
+      });
+    });
+  });
 })();

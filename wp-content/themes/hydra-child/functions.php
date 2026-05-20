@@ -23,3 +23,6 @@ add_action( 'wp_enqueue_scripts', function () {
     );
 
 }, 20 );
+
+// Remove Kadence footer credit
+add_filter( 'kadence_footer_credit', '__return_false' );

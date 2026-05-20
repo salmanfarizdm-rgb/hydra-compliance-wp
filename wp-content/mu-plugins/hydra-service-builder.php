@@ -17,224 +17,52 @@ add_action( 'wp_enqueue_scripts', function () {
         'hydra-frontend',
         plugins_url( 'hydra-frontend.js', __FILE__ ),
         [],
-        '1.1',
+        '1.2',
         true
     );
 } );
 
-// ── Page Toggle Bar + SEO Keywords Bar ────────────────────────────────────────
-
-add_action( 'kadence_after_header', 'hydra_render_page_bars' );
-
-function hydra_render_page_bars(): void {
-
-    // Page definitions: slug => [ label, url, h1_chips[], h2_chips[] ]
-    $pages = [
-        'temperature-mapping-saudi-arabia' => [
-            'label' => '1·Temp Mapping',
-            'url'   => '/services/temperature-mapping-saudi-arabia/',
-            'h1'    => [ 'temperature mapping services Saudi Arabia' ],
-            'h2'    => [ 'warehouse temperature mapping' ],
-        ],
-        'validation-qualification-services' => [
-            'label' => '2·Validation',
-            'url'   => '/services/validation-qualification-services/',
-            'h1'    => [ 'validation and qualification services Saudi Arabia' ],
-            'h2'    => [ 'cold chain validation services' ],
-        ],
-        'gdp-compliance-saudi-arabia' => [
-            'label' => '3·GDP Compliance',
-            'url'   => '/services/gdp-compliance-saudi-arabia/',
-            'h1'    => [ 'GDP compliance Saudi Arabia' ],
-            'h2'    => [ 'SFDA GDP compliance' ],
-        ],
-        'monitoring-data-loggers' => [
-            'label' => '4·Monitoring',
-            'url'   => '/products/monitoring-data-loggers/',
-            'h1'    => [ 'real time temperature monitoring system' ],
-            'h2'    => [ 'cold chain monitoring system', 'temperature data logger' ],
-        ],
-        'calibration-services' => [
-            'label' => '5·Calibration',
-            'url'   => '/services/calibration-services/',
-            'h1'    => [ 'calibration services Saudi Arabia' ],
-            'h2'    => [],
-        ],
-        'pharmaceutical-quality-management-system' => [
-            'label' => '6·QMS',
-            'url'   => '/services/pharmaceutical-quality-management-system/',
-            'h1'    => [ 'pharma QMS Saudi Arabia' ],
-            'h2'    => [ 'QMS implementation' ],
-        ],
-        'thermal-packaging' => [
-            'label' => '7·Thermal Pack.',
-            'url'   => '/products/thermal-packaging/',
-            'h1'    => [ 'thermal packaging' ],
-            'h2'    => [ 'temperature controlled shipping' ],
-        ],
-        'computer-system-validation-saudi-arabia' => [
-            'label' => '8·CSV',
-            'url'   => '/services/computer-system-validation-saudi-arabia/',
-            'h1'    => [ 'computer system validation services' ],
-            'h2'    => [ 'GAMP 5 validation' ],
-        ],
-        'cold-chain-solutions-saudi-arabia' => [
-            'label' => '9·Cold Chain Sol.',
-            'url'   => '/services/cold-chain-solutions-saudi-arabia/',
-            'h1'    => [ 'cold chain solutions Saudi Arabia' ],
-            'h2'    => [ 'GDP transport solutions' ],
-        ],
-        'temperature-data-logger-saudi-arabia' => [
-            'label' => '10·Data Logger',
-            'url'   => '/products/temperature-data-logger-saudi-arabia/',
-            'h1'    => [ 'temperature data logger Saudi Arabia' ],
-            'h2'    => [ 'pharmaceutical data logger', 'ISO 17025 data logger calibration' ],
-        ],
+// ── Service page slugs ────────────────────────────────────────────────────────
+function hydra_service_slugs(): array {
+    return [
+        'temperature-mapping-saudi-arabia',
+        'validation-qualification-services',
+        'gdp-compliance-saudi-arabia',
+        'monitoring-data-loggers',
+        'calibration-services',
+        'pharmaceutical-quality-management-system',
+        'thermal-packaging',
+        'computer-system-validation-saudi-arabia',
+        'cold-chain-solutions-saudi-arabia',
+        'temperature-data-logger-saudi-arabia',
     ];
+}
 
-    // Detect current page
-    $obj          = get_queried_object();
-    $current_slug = ( $obj instanceof WP_Post ) ? $obj->post_name : '';
+// ── Add body class on service/product pages ────────────────────────────────────
+add_filter( 'body_class', function ( array $classes ): array {
+    $obj = get_queried_object();
+    if ( $obj instanceof WP_Post && in_array( $obj->post_name, hydra_service_slugs(), true ) ) {
+        $classes[] = 'hydra-service-page';
+    }
+    return $classes;
+} );
 
-    // Only render on the 10 service/product pages
-    if ( ! array_key_exists( $current_slug, $pages ) ) {
+// ── SVG Visual Hero (after header, service pages only) ───────────────────────
+add_action( 'kadence_after_header', 'hydra_render_svg_hero' );
+
+function hydra_render_svg_hero(): void {
+    $obj  = get_queried_object();
+    $slug = ( $obj instanceof WP_Post ) ? $obj->post_name : '';
+    if ( ! in_array( $slug, hydra_service_slugs(), true ) ) {
         return;
     }
 
-    $current = $pages[ $current_slug ];
-
-    // Toggle buttons list (Home, 9 pages, About, Contact)
-    $toggle_buttons = array_merge(
-        [ [ 'label' => 'Home',    'url' => '/' ] ],
-        array_map( fn( $p ) => [ 'label' => $p['label'], 'url' => $p['url'] ], array_values( $pages ) ),
-        [
-            [ 'label' => 'About',   'url' => '/about/' ],
-            [ 'label' => 'Contact', 'url' => '/contact/' ],
-        ]
-    );
-
+    $svg = hydra_get_service_svg( $slug );
+    if ( ! $svg ) {
+        return;
+    }
     ?>
-    <style id="hydra-page-bars-css">
-    /* ── Page Toggle Bar ── */
-    .hydra-pg-bar {
-        background: #0C1E28;
-        padding: 9px 5%;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        flex-wrap: wrap;
-        position: relative;
-        z-index: 50;
-    }
-    .hydra-pg-label {
-        font-size: 10px;
-        color: rgba(255,255,255,0.35);
-        letter-spacing: 0.8px;
-        margin-right: 4px;
-        white-space: nowrap;
-        font-family: 'DM Sans', sans-serif;
-    }
-    .hydra-pg-btn {
-        font-size: 11px;
-        padding: 4px 11px;
-        border-radius: 4px;
-        border: 1px solid rgba(255,255,255,0.15);
-        background: transparent;
-        color: rgba(255,255,255,0.52);
-        cursor: pointer;
-        font-family: 'DM Sans', sans-serif;
-        text-decoration: none;
-        display: inline-block;
-        white-space: nowrap;
-        line-height: 1.4;
-    }
-    .hydra-pg-btn:hover {
-        color: rgba(255,255,255,0.85);
-        border-color: rgba(255,255,255,0.35);
-    }
-    .hydra-pg-btn.is-active {
-        background: #016B7A;
-        color: #ffffff;
-        border-color: #016B7A;
-    }
-    /* ── SEO Keywords Bar ── */
-    .hydra-kw-bar {
-        background: #132533;
-        border-bottom: 1px solid rgba(255,255,255,0.06);
-        padding: 10px 5%;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-    }
-    .hydra-kw-label {
-        font-size: 10px;
-        color: rgba(255,255,255,0.35);
-        text-transform: uppercase;
-        letter-spacing: 0.8px;
-        white-space: nowrap;
-        font-family: 'DM Sans', sans-serif;
-    }
-    .hydra-kw-chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        align-items: center;
-    }
-    .hydra-kw-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0;
-        border-radius: 4px;
-        font-size: 11px;
-        font-weight: 500;
-        padding: 3px 10px 3px 6px;
-        line-height: 1.4;
-        white-space: nowrap;
-        text-decoration: none;
-    }
-    .hydra-kw-chip .hydra-kw-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        display: inline-block;
-        flex-shrink: 0;
-        margin-right: 5px;
-    }
-    .hydra-kw-chip.h1 {
-        background: #E0F4F7;
-        color: #014F59;
-        border: 1px solid #b0dfe5;
-    }
-    .hydra-kw-chip.h1 .hydra-kw-dot { background: #016B7A; }
-    .hydra-kw-chip.h2 {
-        background: #F5F8F9;
-        color: #5E7580;
-        border: 1px solid #dde5e8;
-    }
-    .hydra-kw-chip.h2 .hydra-kw-dot { background: #aabdc4; }
-    /* ── Mobile: horizontal scroll ── */
-    @media (max-width: 767px) {
-        .hydra-pg-bar {
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            padding: 9px 16px;
-        }
-        .hydra-pg-bar::-webkit-scrollbar { display: none; }
-        .hydra-kw-bar {
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            padding: 10px 16px;
-        }
-        .hydra-kw-bar::-webkit-scrollbar { display: none; }
-        .hydra-kw-chips { flex-wrap: nowrap; }
-    }
+    <style id="hydra-svc-visual-css">
     /* ── Visual Hero ── */
     .hydra-svc-visual {
         background: #0C1E28;
@@ -253,42 +81,252 @@ function hydra_render_page_bars(): void {
         .hydra-svc-visual { max-height: 160px; }
         .hydra-svc-visual svg { max-height: 160px; }
     }
+    /* ── Gap fix: remove content-area top margin on service pages ── */
+    .hydra-service-page .content-area { margin-top: 0 !important; }
+    .hydra-service-page .entry-content-wrap { padding-top: 0 !important; }
+    /* ── Hide Kadence entry-header (page title) on service pages ── */
+    .hydra-service-page .entry-header { display: none !important; }
+    /* ── Content classes for service page body ── */
+    .egrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 24px;
+    }
+    .ecard {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #ffffff;
+        border: 1px solid #E0EAF0;
+        border-radius: 8px;
+        padding: 12px 14px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #0C1E28;
+        box-shadow: 0 1px 4px rgba(12,30,40,0.06);
+    }
+    @media (max-width: 480px) { .egrid { grid-template-columns: 1fr; } }
+    .cl {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 24px;
+    }
+    .cl li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 8px 0;
+        border-bottom: 1px solid #E8EFF3;
+        font-size: 14px;
+        color: #3D5460;
+        line-height: 1.5;
+    }
+    .cl li:last-child { border-bottom: none; }
+    .chk {
+        flex-shrink: 0;
+        width: 20px;
+        height: 20px;
+        background: rgba(1,107,122,0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        color: #016B7A;
+        font-weight: 700;
+        margin-top: 1px;
+    }
+    .sptable {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+        margin-top: 20px;
+        margin-bottom: 24px;
+    }
+    .sptable td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #E0EAF0;
+        color: #3D5460;
+        line-height: 1.5;
+    }
+    .sptable td:first-child {
+        font-weight: 600;
+        color: #0C1E28;
+        width: 42%;
+        white-space: nowrap;
+    }
+    .sptable tr:last-child td { border-bottom: none; }
+    @media (max-width: 480px) { .sptable td:first-child { white-space: normal; } }
+    /* ── Sidebar breadcrumb bar ── */
+    .hydra-service-page .hydra-breadcrumb-bar { display: none; }
     </style>
+    <?php
+    echo '<div class="hydra-svc-visual">' . $svg . '</div>';
+}
 
-    <div class="hydra-pg-bar" role="navigation" aria-label="Page navigation">
-        <span class="hydra-pg-label">Pages:</span>
-        <?php foreach ( $toggle_buttons as $btn ) :
-            $is_active = rtrim( $btn['url'], '/' ) === rtrim( $current['url'], '/' );
-        ?>
-        <a href="<?php echo esc_url( home_url( $btn['url'] ) ); ?>"
-           class="hydra-pg-btn<?php echo $is_active ? ' is-active' : ''; ?>"
-           <?php if ( $is_active ) echo 'aria-current="page"'; ?>>
-            <?php echo esc_html( $btn['label'] ); ?>
-        </a>
-        <?php endforeach; ?>
-    </div>
+// ── Global footer (all pages) ─────────────────────────────────────────────────
+add_action( 'kadence_before_footer', 'hydra_render_global_footer' );
 
-    <div class="hydra-kw-bar" aria-label="SEO target keywords">
-        <span class="hydra-kw-label">SEO Target Keywords</span>
-        <div class="hydra-kw-chips">
-            <?php foreach ( $current['h1'] as $kw ) : ?>
-            <span class="hydra-kw-chip h1">
-                <span class="hydra-kw-dot"></span>H1: <?php echo esc_html( $kw ); ?>
-            </span>
-            <?php endforeach; ?>
-            <?php foreach ( $current['h2'] as $kw ) : ?>
-            <span class="hydra-kw-chip h2">
-                <span class="hydra-kw-dot"></span>H2: <?php echo esc_html( $kw ); ?>
-            </span>
-            <?php endforeach; ?>
+function hydra_render_global_footer(): void {
+    ?>
+    <footer class="hydra-global-footer" aria-label="Site footer">
+    <div class="hgf-inner">
+        <div class="hgf-cols">
+
+            <!-- Col 1: Brand -->
+            <div class="hgf-col hgf-col--brand">
+                <div class="hgf-logo"><span class="hgf-hy">hy</span><span class="hgf-name">Hydra.</span></div>
+                <p class="hgf-desc">Pharmaceutical compliance consultants based in Jeddah, Saudi Arabia. Temperature mapping, validation, GDP compliance, calibration, and monitoring solutions across the Kingdom.</p>
+                <ul class="hgf-contact">
+                    <li>📍 Jeddah, Saudi Arabia</li>
+                    <li>✉️ info@hydratl.com</li>
+                    <li>🌐 hydracompliance.com</li>
+                </ul>
+            </div>
+
+            <!-- Col 2: Services -->
+            <div class="hgf-col">
+                <h4 class="hgf-heading">Services</h4>
+                <ul class="hgf-links">
+                    <li><a href="/services/temperature-mapping-saudi-arabia/">Temperature Mapping</a></li>
+                    <li><a href="/services/validation-qualification-services/">Validation &amp; Qualification</a></li>
+                    <li><a href="/services/gdp-compliance-saudi-arabia/">GDP Compliance</a></li>
+                    <li><a href="/services/calibration-services/">Calibration Services</a></li>
+                    <li><a href="/services/pharmaceutical-quality-management-system/">Pharma QMS</a></li>
+                    <li><a href="/services/computer-system-validation-saudi-arabia/">Computer System Validation</a></li>
+                    <li><a href="/services/cold-chain-solutions-saudi-arabia/">Cold Chain Solutions</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 3: Products + Company -->
+            <div class="hgf-col">
+                <h4 class="hgf-heading">Products</h4>
+                <ul class="hgf-links">
+                    <li><a href="/products/monitoring-data-loggers/">Monitoring &amp; Data Loggers</a></li>
+                    <li><a href="/products/temperature-data-logger-saudi-arabia/">Temperature Data Logger</a></li>
+                    <li><a href="/products/thermal-packaging/">Thermal Packaging</a></li>
+                </ul>
+                <h4 class="hgf-heading" style="margin-top:24px">Company</h4>
+                <ul class="hgf-links">
+                    <li><a href="/about/">About HYDRA</a></li>
+                    <li><a href="/contact/">Contact us</a></li>
+                </ul>
+            </div>
+
+            <!-- Col 4: Standards -->
+            <div class="hgf-col">
+                <h4 class="hgf-heading">Standards</h4>
+                <ul class="hgf-links hgf-links--standards">
+                    <li>SFDA GDP guidelines</li>
+                    <li>WHO GDP 2010</li>
+                    <li>ISO 17025:2017</li>
+                    <li>21 CFR Part 11</li>
+                    <li>GAMP 5</li>
+                    <li>EU GMP Annex 11</li>
+                    <li>ICH Q9 / Q10</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="hgf-bar">
+            <span>© 2026 HYDRA Quality &amp; Compliance · Jeddah, Saudi Arabia</span>
+            <span>hydracompliance.com</span>
         </div>
     </div>
+    </footer>
 
-    <?php
-    $svg = hydra_get_service_svg( $current_slug );
-    if ( $svg ) {
-        echo '<div class="hydra-svc-visual">' . $svg . '</div>';
+    <style id="hydra-global-footer-css">
+    /* ── Hide Kadence site-footer (replaced by hydra-global-footer) ── */
+    .site-footer { display: none !important; }
+    /* ── Hide Kadence credit everywhere ── */
+    .site-info, .kadence-credit, a[href*="kadencewp.com"], .footer-credit { display: none !important; }
+
+    /* ── Global footer ── */
+    .hydra-global-footer {
+        background: #0C1E28;
+        font-family: 'DM Sans', sans-serif;
     }
+    .hgf-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 64px 5% 0;
+    }
+    .hgf-cols {
+        display: grid;
+        grid-template-columns: 2fr 1.5fr 1fr 1fr;
+        gap: 48px;
+        padding-bottom: 48px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .hgf-logo {
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        margin-bottom: 14px;
+    }
+    .hgf-hy   { color: #016B7A; }
+    .hgf-name { color: #ffffff; }
+    .hgf-desc {
+        font-size: 13px;
+        line-height: 1.7;
+        color: rgba(255,255,255,0.42);
+        margin: 0 0 16px;
+    }
+    .hgf-contact {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .hgf-contact li {
+        font-size: 13px;
+        color: rgba(255,255,255,0.38);
+        padding: 4px 0;
+    }
+    .hgf-heading {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.45);
+        margin: 0 0 16px;
+    }
+    .hgf-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .hgf-links li, .hgf-links a {
+        font-size: 13px;
+        color: rgba(255,255,255,0.52);
+        line-height: 1.5;
+        padding: 4px 0;
+        display: block;
+        text-decoration: none;
+        transition: color 0.15s;
+    }
+    .hgf-links a:hover { color: rgba(255,255,255,0.85); }
+    .hgf-links--standards li { color: rgba(255,255,255,0.35); }
+    .hgf-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        font-size: 11px;
+        color: rgba(255,255,255,0.22);
+    }
+    @media (max-width: 991px) {
+        .hgf-cols { grid-template-columns: 1fr 1fr; gap: 32px; }
+        .hgf-col--brand { grid-column: 1 / -1; }
+    }
+    @media (max-width: 600px) {
+        .hgf-cols { grid-template-columns: 1fr; gap: 28px; }
+        .hgf-inner { padding: 48px 16px 0; }
+        .hgf-bar { flex-direction: column; gap: 6px; text-align: center; }
+    }
+    </style>
+    <?php
 }
 
 function hydra_get_service_svg( string $slug ): string {
